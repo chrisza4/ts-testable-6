@@ -45,8 +45,8 @@ describe('CreateExpressHandler', () => {
     const response = createMockedExpressResponse()
     const validator: (body: unknown) => ControllerUtils.ValidationResult<unknown> = (body) => {
       return {
-        error: 'Invalid input A',
-        validatedInput: null
+        errorMessage: 'Invalid input A',
+        error: true
       }
     }
     const handler = () => Promise.resolve(null)
@@ -73,7 +73,7 @@ describe('CreateExpressHandler', () => {
     const response = createMockedExpressResponse()
     const validator: (body: unknown) => ControllerUtils.ValidationResult<TestInput> = (body) => {
       return {
-        error: null,
+        error: false,
         validatedInput: { b: 2 }
       }
     }

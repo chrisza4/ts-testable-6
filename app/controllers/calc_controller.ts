@@ -1,7 +1,7 @@
 import * as Express from 'express'
 import * as CalcView from '../views/calc_view'
 import * as CalcModel from '../models/calc_model'
-// import { CreateController } from './controller_utils'
+import * as ControllerUtils from './controller_utils'
 
 export type CalcRequest = {
   operator: CalcModel.Operator;
@@ -9,12 +9,27 @@ export type CalcRequest = {
   secondNumber: number;
 }
 
-export function Calc(req: Express.Request, res: Express.Response<CalcView.CalcResult>): Express.Response<CalcView.CalcResult> {
-  const { operator, secondNumber, firstNumber } = req.body
+function CalcValidator(body: any): ControllerUtils.ValidationResult<CalcRequest> {
+  const { operator, secondNumber, firstNumber } = body
   if (!Object.values(CalcModel.Operator).includes(operator)) {
-    return res.status(422).send({ error: "Invalid operator" })
+    return {
+      error: true,
+      errorMessage: 'Invalid operator'
+    }
   }
-
-  const result = CalcModel.calculate({ firstNumber, secondNumber, operator })
-  return res.json(CalcView.calcResultView(result))
+  return {
+    error: false,
+    validatedInput: {
+      firstNumber, secondNumber, operator
+    }
+  }
 }
+export async function CalcHandler(input: CalcRequest): Promise<number> {
+  return CalcModel.calculate(input)
+}
+
+export const Calc = ControllerUtils.createExpressHandler<CalcRequest, number>({
+  validator: CalcValidator,
+  handler: CalcHandler,
+  view: CalcView.calcResultView
+})

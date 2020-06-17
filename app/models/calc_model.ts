@@ -5,7 +5,7 @@ export enum Operator {
   Divide = '/'
 }
 
-type CalculateModel = {
+export type CalculateModel = {
   firstNumber: number;
   secondNumber: number;
   operator: Operator;
