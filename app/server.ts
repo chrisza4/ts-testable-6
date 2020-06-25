@@ -7,8 +7,6 @@ const app = Express()
 app.use(BodyParser.json())
 const port = Config.port
 
-app.get('/', (req, res) => res.send('Hello world'))
-
 Routes.setupRoutes(app)
 
 if (Config.NODE_ENV !== 'TEST')  {

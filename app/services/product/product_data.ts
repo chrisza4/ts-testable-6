@@ -2,7 +2,7 @@ import * as MongoDb from 'mongodb'
 import * as MongoConnection from '../connections/mongodb'
 import { Product } from './product_type'
 
-export async function getById (id: MongoDb.ObjectId): Promise<Product | null> {
+export async function getById (id: MongoDb.ObjectId | string): Promise<Product | null> {
   const client = await MongoConnection.getClient()
   return client.collection('products').findOne<Product>({ id })
 }
