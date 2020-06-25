@@ -1,7 +1,7 @@
 jest.mock('../services/product/product_service')
 import { mocked } from 'ts-jest/utils'
 import * as ProductService from '../services/product/product_service'
-import * as ProductController from './product_ccntroller'
+import * as ProductController from './product_controller'
 import * as ProductType from '../services/product/product_type'
 import { ObjectId } from 'mongodb'
 
@@ -13,7 +13,7 @@ const mockProduct: ProductType.Product = {
   unitPrice: 100
 }
 
-describe('ProductController', () => {
+describe('getById', () => {
   it('return not found if not provide id', async () => {
     try {
       await ProductController.getById({ }, { }, { })
@@ -38,5 +38,25 @@ describe('ProductController', () => {
       expect(err.name).toEqual('NotFoundError')
     }
 
+  })
+})
+
+describe('post', () => {
+  it('return validation error for invalid input', async () => {
+    try {
+      const product = await ProductController.post({ something: 'not right' }, {}, {})
+      throw Error('Should not pass')
+    } catch (err) {
+      expect(err.name).toEqual('ValidationError')
+    }
+  })
+
+  it('return product value for invalid input', async () => {
+    mocked(ProductService).insert.mockResolvedValue(mockProduct)
+    const product = await ProductController.post({
+      ...mockProduct,
+      id: undefined
+    }, { }, { })
+    expect(product).toEqual(mockProduct)
   })
 })
