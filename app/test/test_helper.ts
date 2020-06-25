@@ -1,4 +1,4 @@
-import * as MongoConnection from '../app/services/connections/mongodb'
+import * as MongoConnection from '../services/connections/mongodb'
 
 export async function cleanDb (): Promise<void> {
   const db = await MongoConnection.getClient()
@@ -8,7 +8,7 @@ export async function cleanDb (): Promise<void> {
   ))
 }
 
-export async function close () {
+export async function close (): Promise<void> {
   return MongoConnection.close()
 }
 
