@@ -6,7 +6,8 @@ export type HttpError = {
 export function errorView(err: Error): HttpError {
   const errorMapping = {
     'ValidationError': 422,
-    'DivideByZeroError': 422
+    'DivideByZeroError': 422,
+    'NotFoundError': 404,
   }
   return {
     statusCode: errorMapping[err.name] || 500,

@@ -5,12 +5,14 @@ import * as ProductController from './product_controller'
 import * as ProductType from '../services/product/product_type'
 import { ObjectId } from 'mongodb'
 
-const mockProduct: ProductType.Product = {
-  sku: '111',
-  name: 'my product',
-  description: 'mock product',
-  id: new ObjectId(),
-  unitPrice: 100
+function generateMockProduct(): ProductType.Product {
+  return {
+    sku: '111',
+    name: 'my product',
+    description: 'mock product',
+    id: new ObjectId(),
+    unitPrice: 100
+  }
 }
 
 describe('getById', () => {
@@ -24,6 +26,7 @@ describe('getById', () => {
   })
 
   it('return product value provided id', async () => {
+    const mockProduct = generateMockProduct()
     mocked(ProductService).getById.mockResolvedValue(mockProduct)
     const product = await ProductController.getById({ }, { }, { id: 3 })
     expect(product).toEqual(mockProduct)
@@ -52,11 +55,43 @@ describe('post', () => {
   })
 
   it('return product value for invalid input', async () => {
+    const mockProduct = generateMockProduct()
     mocked(ProductService).insert.mockResolvedValue(mockProduct)
     const product = await ProductController.post({
       ...mockProduct,
       id: undefined
     }, { }, { })
     expect(product).toEqual(mockProduct)
+  })
+
+  describe('list', () => {
+    it('return list of products', async () => {
+      const mockProducts = [
+        generateMockProduct(),
+        generateMockProduct(),
+        generateMockProduct()
+      ]
+      mocked(ProductService).findAll.mockResolvedValue(mockProducts)
+      const products = await ProductController.getAll({}, {}, {})
+      expect(products).toEqual(mockProducts)
+    })
+  })
+
+  describe('remove', () => {
+    it('return success when delete success', async () => {
+      mocked(ProductService).removeById.mockResolvedValue(true)
+      const deleteResult = await ProductController.deleteById({ }, { }, { id: 'haha' })
+      expect(deleteResult).toEqual({
+        success: true
+      })
+    })
+
+    it('return failed when delete failed', async () => {
+      mocked(ProductService).removeById.mockResolvedValue(false)
+      const deleteResult = await ProductController.deleteById({ }, { }, { id: 'haha' })
+      expect(deleteResult).toEqual({
+        success: false
+      })
+    })
   })
 })
