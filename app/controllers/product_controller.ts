@@ -16,7 +16,7 @@ export async function getById (
   if (!product) {
     throw new ControllerHelper.NotFoundError()
   }
-  return ProductView.view(product)
+  return ProductView.single(product)
 }
 
 export async function post (
@@ -36,7 +36,7 @@ export async function post (
     throw new ControllerHelper.ValidationError(validationResult.error.message)
   }
   const result = await ProductService.insert(validationResult.value)
-  return ProductView.view(result)
+  return ProductView.single(result)
 }
 
 export const getByIdHandler = ControllerHelper.createExpressHandler(getById)
