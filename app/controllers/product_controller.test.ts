@@ -2,7 +2,6 @@ jest.mock('../services/product/product_service')
 import { mocked } from 'ts-jest/utils'
 import * as ProductService from '../services/product/product_service'
 import * as ProductController from './product_controller'
-import * as ProductType from '../services/product/product_type'
 import * as ProductFixtures from './product_fixtures'
 import { ObjectId } from 'mongodb'
 
@@ -33,7 +32,7 @@ describe('getById', () => {
   it('return not found given product not exists', async () => {
     mocked(ProductService).getById.mockResolvedValue(null)
     try {
-      const product = await ProductController.getById({ }, { }, { id: 3 })
+      await ProductController.getById({ }, { }, { id: 3 })
       throw Error('Should not pass')
     } catch (err) {
       expect(err.name).toEqual('NotFoundError')
@@ -45,7 +44,7 @@ describe('getById', () => {
 describe('post', () => {
   it('return validation error for invalid input', async () => {
     try {
-      const product = await ProductController.post({ something: 'not right' }, {}, {})
+      await ProductController.post({ something: 'not right' }, {}, {})
       throw Error('Should not pass')
     } catch (err) {
       expect(err.name).toEqual('ValidationError')

@@ -39,5 +39,5 @@ export async function post(
   return ProductView.view(result)
 }
 
-export const getByIdController = ControllerHelper.createExpressHandler(getById)
-export const postController = ControllerHelper.createExpressHandler(post)
+export const getByIdHandler = ControllerHelper.createExpressHandler(getById)
+export const postHandler = ControllerHelper.createExpressHandler(post)
