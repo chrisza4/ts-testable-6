@@ -19,8 +19,17 @@ describe('ProductData', () => {
       unitPrice: 100
     }
     await ProductData.insert(sampleProduct)
-    const savedProduct = await ProductData.getById(sampleProduct.id)
+    const savedProduct = await ProductData.getById(String(sampleProduct.id))
     expect(savedProduct?.id).toEqual(sampleProduct.id)
     expect(savedProduct?.sku).toEqual('aaa')
   })
+
+  describe('getById', () => {
+    it('return null for invalid object id', async () => {
+      const result = await ProductData.getById('non-mongo-id')
+      expect(result).toBeNull()
+    })
+  })
 })
+
+

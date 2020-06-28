@@ -51,6 +51,19 @@ describe('post', () => {
     }
   })
 
+  it('return validation error for invalid id', async () => {
+    try {
+      const mockProduct = {
+        ...ProductFixtures.generateMockProduct({}),
+        id: 'invalid'
+      }
+      await ProductController.post(mockProduct, { }, { })
+      throw Error('Should not pass')
+    } catch (err) {
+      expect(err.name).toEqual('ValidationError')
+    }
+  })
+
   it('return product value for invalid input', async () => {
     mocked(ProductService).insert.mockResolvedValue(mockProduct)
     const product = await ProductController.post({
