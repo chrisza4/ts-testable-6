@@ -1,7 +1,7 @@
 import * as MongoDb from 'mongodb'
 import { Product } from "../services/product/product_type"
 
-export function generateMockProduct(props: Partial<Product>): Product {
+export function generateMockProduct (props: Partial<Product>): Product {
   return {
     sku: '111',
     name: 'my product',

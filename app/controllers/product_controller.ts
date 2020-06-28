@@ -3,7 +3,7 @@ import * as ControllerHelper from './controller_helper'
 import * as ProductView from '../views/product_view'
 import * as ProductService from '../services/product/product_service'
 
-export async function getById(
+export async function getById (
   body: ControllerHelper.Body,
   queryString: ControllerHelper.QueryString,
   params: ControllerHelper.Params
@@ -19,7 +19,7 @@ export async function getById(
   return ProductView.view(product)
 }
 
-export async function post(
+export async function post (
   body: ControllerHelper.Body,
   queryString: ControllerHelper.QueryString,
   params: ControllerHelper.Params

@@ -3,7 +3,7 @@ export type HttpError = {
   errorMessage: string;
 }
 
-export function errorView(err: Error): HttpError {
+export function errorView (err: Error): HttpError {
   const errorMapping = {
     'ValidationError': 422,
     'DivideByZeroError': 422,

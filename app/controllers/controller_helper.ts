@@ -25,14 +25,14 @@ export function createExpressHandler<TOut> (controller: Controller<TOut>): Expre
 }
 
 export class ValidationError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(message)
     this.name = 'ValidationError'
   }
 }
 
 export class NotFoundError extends Error {
-  constructor(message?: string) {
+  constructor (message?: string) {
     super(message)
     this.name = 'NotFoundError'
     this.message = message || 'Resource not found'
