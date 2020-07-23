@@ -1,6 +1,6 @@
 import * as MongoDb from 'mongodb'
 import * as MongoConnection from '../connections/mongodb'
-import { Product } from './product_type'
+import { Product, ProductAny } from './product_type'
 
 export async function getById (id: MongoDb.ObjectId | string): Promise<Product | null> {
   const client = await MongoConnection.getClient()
@@ -24,3 +24,8 @@ export async function removeById (id: MongoDb.ObjectID | string): Promise<boolea
   return (deleteResult.result.n || 0) > 0
 }
 
+export async function updateById (id: MongoDb.ObjectID | string, updateData: ProductAny): Promise<MongoDb.UpdateWriteOpResult> {
+  const client = await MongoConnection.getClient()  
+  const updateResult = await client.collection('products').updateOne({ id }, { $set: updateData })  
+  return updateResult
+}

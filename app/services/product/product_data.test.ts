@@ -67,4 +67,19 @@ describe('ProductData', () => {
     const deleteFailed = await ProductData.removeById('random_id')
     expect(deleteFailed).toBeFalsy()
   })
+
+  it('can update product', async () => {
+    const sampleProduct: Product = {
+      id: new MongoDb.ObjectID(),
+      sku: 'aaa',
+      description: 'my product',
+      name: 'product',
+      unitPrice: 100
+    }
+    await ProductData.insert(sampleProduct)
+    const updatedProduct = await ProductData.updateById(sampleProduct.id, { unitPrice: 200 })
+    expect(updatedProduct.modifiedCount).toEqual(1)
+    const savedProduct = await ProductData.getById(sampleProduct.id)
+    expect(savedProduct?.unitPrice).toEqual(200)
+  })
 })

@@ -6,4 +6,5 @@ export function setupRoutes(app: Express.Express): void {
   app.post('/product', ProductController.postHandler)
   app.get('/products', ProductController.getAllHandler)
   app.delete('/product/:id', ProductController.deleteHandler)
+  app.put('/product/:id', ProductController.updateByIdHandler)
 }

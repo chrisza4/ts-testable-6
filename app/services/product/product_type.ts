@@ -7,3 +7,11 @@ export type Product = {
   name: string;
   unitPrice: number;
 }
+
+export type ProductAny = {
+  id?: MongoDb.ObjectId;
+  sku?: string;
+  description?: string;
+  name?: string;
+  unitPrice?: number;
+}
