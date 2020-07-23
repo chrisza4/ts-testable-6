@@ -95,3 +95,53 @@ describe('post', () => {
     })
   })
 })
+
+describe('update by id', () => {
+  it('return updated price value when update success', async () => {
+    const mockProduct = generateMockProduct()
+    mockProduct.unitPrice = 200
+    mocked(ProductService).updateById.mockResolvedValue(mockProduct)
+    const updateResult = await ProductController.updateById({ unitPrice: mockProduct.unitPrice }, {}, { id: String(mockProduct.id) })
+    expect(updateResult).toEqual(mockProduct)
+  })
+
+  it('send id to update service', async () => {
+    const mockProduct = generateMockProduct()
+    const MockedProductService = mocked(ProductService)
+    MockedProductService.updateById.mockResolvedValue(mockProduct)
+    const updateResult = await ProductController.updateById({ unitPrice: mockProduct.unitPrice }, {}, { id: String(mockProduct.id) })
+    expect(MockedProductService.updateById.mock.calls[1]).toEqual([mockProduct.id, { unitPrice: mockProduct.unitPrice }])
+  })
+
+  it('return validate error', async () => {
+    try {
+      const mockProduct = generateMockProduct()
+      const product = await ProductController.updateById({ unitPrice: 'not right' }, {}, { id: String(mockProduct.id) })
+    } catch (err) {
+      expect(err.name).toEqual('ValidationError')
+    }
+  })
+
+  it('return not found error', async () => {
+    try {
+      expect.assertions(1)
+      mocked(ProductService).updateById.mockResolvedValue(null)
+      const mockProduct = generateMockProduct()
+      const product = await ProductController.updateById({ unitPrice: mockProduct.unitPrice }, {}, { id: 'not_found' })
+    } catch (err) {
+      expect(err.name).toEqual('NotFoundError')
+    }
+  })
+
+  it('return validate error when not send id', async () => {
+    try {
+      expect.assertions(1)
+      const mockProduct = generateMockProduct()
+      const product = await ProductController.updateById({ unitPrice: 200 }, {}, {})
+    } catch (err) {
+      expect(err.name).toEqual('ValidationError')
+    }
+  })
+})
+
+
